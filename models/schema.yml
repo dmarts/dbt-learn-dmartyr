@@ -30,3 +30,44 @@ models:
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+  - name: orders
+    description: This model lists orders placed
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+sources:
+  - name: jaffle_shop
+    description: '{{ doc("source_jaffle_shop")}}'
+    database: raw
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            description: Customer ID
+            tests:
+              - not_null
+      - name: orders
+        columns:  
+          - name: id
+            description: Order ID
+            tests:
+              - not_null
+
+  - name: stripe
+    database: raw
+    description: Imported source data from stripe
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+    tables:
+      - name: payment
+        description: Payments table from stripe
+        loaded_at_field: _BATCHED_AT
+        tests: 
