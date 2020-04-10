@@ -29,7 +29,7 @@ pivoted as (
         {%- if not loop.last -%}
         ,
         {% endif -%}
-        {% endfor -%}
+        {% endfor %}
         
     from payments
     group by 1

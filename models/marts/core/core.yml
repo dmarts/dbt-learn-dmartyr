@@ -22,3 +22,12 @@ models:
           - relationships:
               to: ref('stg_customers')
               field: customer_id
+
+sources:
+  - name: snowplow
+    database: raw
+    loaded_at_field: collector_tstamp
+    freshness:
+      error_after: {count: 1, period: hour}
+    tables:
+      - name: event
