@@ -1,0 +1,7 @@
+version: 2
+sources:
+  - name: learn_stripe
+    database: raw
+    tables:
+      - name: charges
+      - name: refunds
